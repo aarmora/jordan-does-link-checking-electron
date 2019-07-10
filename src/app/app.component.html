@@ -1,1 +1,22 @@
-<router-outlet></router-outlet>
+<form (submit)="submit()">
+    <mat-form-field>
+        <input type="text" [(ngModel)]="domainName" matInput name="domain-name" placeholder="Domain name" />
+    </mat-form-field>
+    <mat-form-field>
+        <input type="text" [(ngModel)]="desiredIOThreads" matInput name="io-threads" placeholder="I/O threads" />
+    </mat-form-field>
+
+    <button type="submit" mat-flat-button> Submit</button>
+
+</form>
+
+<br>
+<br>
+
+<h3>Potentially Bad Links</h3>
+<app-links [badLinks]="true"></app-links>
+
+<br>
+<br>
+<h3>All links</h3>
+<app-links></app-links>
