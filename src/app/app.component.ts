@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { ElectronService } from './providers/electron.service';
 import { AppConfig } from '../environments/environment';
-import { deadLinkChecker } from 'deadLinkChecker';
-import { shell } from 'electron';
+import { deadLinkChecker } from 'dead-link-checker';
 import { mockLinks } from './mock-data';
 import { LinksService } from './services/links.service';
 
@@ -15,6 +14,8 @@ export class AppComponent {
     public domainName: string;
     public desiredIOThreads: string;
     public links: any[] = mockLinks;
+    public elapsedTime: number;
+
     constructor(public electronService: ElectronService, private linksService: LinksService) {
 
         console.log('AppConfig', AppConfig);
@@ -29,14 +30,11 @@ export class AppComponent {
     }
 
     public async submit() {
-        console.log('submitted', this.domainName);
+        this.linksService.links = [];
+        this.linksService.badLinks = [];
+        this.elapsedTime = null;
 
-        await deadLinkChecker(this.domainName, this.desiredIOThreads, this.linksService.links);
+        this.elapsedTime = await deadLinkChecker(this.domainName, undefined, this.linksService.links);
 
-    }
-
-    public openLink(link: string, event: Event) {
-        event.preventDefault();
-        shell.openExternal(link);
     }
 }

@@ -2,11 +2,9 @@
     <mat-form-field>
         <input type="text" [(ngModel)]="domainName" matInput name="domain-name" placeholder="Domain name" />
     </mat-form-field>
-    <mat-form-field>
-        <input type="text" [(ngModel)]="desiredIOThreads" matInput name="io-threads" placeholder="I/O threads" />
-    </mat-form-field>
 
     <button type="submit" mat-flat-button> Submit</button>
+    <h4 *ngIf="elapsedTime">Completed in {{elapsedTime / 1000}} seconds.</h4>
 
 </form>
 

@@ -3,6 +3,8 @@ import { LinksService } from '../../services/links.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { shell } from 'electron';
+import { ILinkObject } from 'dead-link-checker/dist/helpers';
 
 @Component({
     selector: 'app-links',
@@ -15,6 +17,7 @@ export class LinksComponent implements OnInit {
     @Input() badLinks: boolean;
     public dataSource: MatTableDataSource<any>;
     public filterValue = '';
+    public previousLinksLength = 0;
 
     public displayedColumns: string[] = ['link', 'status', 'locationOfLink'];
 
@@ -23,24 +26,22 @@ export class LinksComponent implements OnInit {
     public ngOnInit() {
         this.refresh();
         setInterval(() => {
-            if (!this.badLinks && this.dataSource && this.linksService.links
-                && (this.dataSource.data.length !== this.linksService.links.length)) {
+            if (!this.badLinks && (this.previousLinksLength !== this.linksService.links.length)) {
                 this.refresh();
             }
-            else if (this.badLinks && this.dataSource && this.linksService.badLinks
-                && (this.dataSource.data.length !== this.linksService.badLinks.length)) {
+            else if (this.badLinks && (this.previousLinksLength !== this.linksService.badLinks.length)) {
                 this.refresh();
             }
         }, 1500);
     }
 
     public refresh() {
-        console.log('refresshing');
         this.linksService.updateBadLinks();
         this.dataSource = new MatTableDataSource(this.badLinks ? this.linksService.badLinks : this.linksService.links);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
         this.applyFilter(this.filterValue);
+        this.previousLinksLength = this.badLinks ? this.linksService.badLinks.length : this.linksService.links.length;
     }
 
     public applyFilter(filterValue: string) {
@@ -49,6 +50,40 @@ export class LinksComponent implements OnInit {
         if (this.dataSource.paginator) {
             this.dataSource.paginator.firstPage();
         }
+    }
+
+    public openLink(link: string, event: Event) {
+        event.preventDefault();
+        shell.openExternal(link);
+    }
+
+    public isDisabled() {
+        return this.badLinks ? this.linksService.badLinks.length < 1 : this.linksService.links.length < 1;
+    }
+
+    public download() {
+        let csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += "link,status,locationOfLink\r\n";
+        const links = this.badLinks ? this.linksService.badLinks : this.linksService.links;
+
+        links.forEach((linkObject: ILinkObject) => {
+            const row = `${linkObject.link},${linkObject.status},${linkObject.locationOfLink}`;
+            csvContent += row + "\r\n";
+        });
+        const encodedUri = encodeURI(csvContent);
+        // if (window.navigator.msSaveBlob) { // IE & Edge
+        //     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        //     window.navigator.msSaveBlob(blob, 'error log.csv');
+        // }
+        // else { // Chrome & FF
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        const fileName = this.badLinks ? 'Bad links' : 'All links';
+        link.setAttribute("download", `${fileName}.csv`);
+        document.body.appendChild(link); // Required for FF
+
+        link.click();
+        // }
     }
 
 }

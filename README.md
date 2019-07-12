@@ -11,7 +11,7 @@
 
 # Introduction
 
-Bootstrap and package your project with Angular 8 and Electron (Typescript + SASS + Hot Reload) for creating Desktop applications.
+Bootstrapped from the awesome boilerplate made by Maxime Gris. See the boilerplate [here]( https://github.com/maximegris/angular-electron).
 
 Currently runs with:
 
@@ -19,37 +19,11 @@ Currently runs with:
 - Electron v5.0.2
 - Electron Builder v20.41.0
 
-With this sample, you can :
-
-- Run your app in a local development environment with Electron & Hot reload
-- Run your app in a production environment
-- Package your app into an executable file for Linux, Windows & Mac
-
-/!\ Angular 8.0 CLI needs Node 10.9 or later to work.
+The goal of this is create a user friendly version of the [Dead Link Checker](https://github.com/aarmora/jordan-does-dead-link-checking).
 
 ## Getting Started
 
-Clone this repository locally :
-
-``` bash
-git clone https://github.com/maximegris/angular-electron.git
-```
-
-Install dependencies with npm :
-
-``` bash
-npm install
-```
-
-There is an issue with `yarn` and `node_modules` that are only used in electron on the backend when the application is built by the packager. Please use `npm` as dependencies manager.
-
-
-If you want to generate Angular components with Angular-cli , you **MUST** install `@angular/cli` in npm global context.
-Please follow [Angular-cli documentation](https://github.com/angular/angular-cli) if you had installed a previous version of `angular-cli`.
-
-``` bash
-npm install -g @angular/cli
-```
+For development, it's as simple sa clone, `npm i` and `npm start`. Otherwise you should be able to download the files you program files that you want from relesaes.
 
 ## To build for development
 

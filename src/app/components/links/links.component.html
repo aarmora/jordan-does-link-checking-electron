@@ -1,3 +1,5 @@
+<button (click)="download()" [disabled]="isDisabled()" mat-button>Download as CSV</button>
+
 <mat-form-field>
     <input matInput (keyup)="applyFilter(filterValue)" [(ngModel)]="filterValue" placeholder="Filter">
 </mat-form-field>

@@ -6,7 +6,7 @@ import { mockLinks } from '../mock-data';
 })
 export class LinksService {
 
-    public links = mockLinks;
+    public links = []; // mockLinks;
     public badLinks = []; // mockLinks.filter(link => link.status && link.status > 399);
 
     constructor() { }
