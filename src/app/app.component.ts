@@ -32,9 +32,13 @@ export class AppComponent {
     public async submit() {
         this.linksService.links = [];
         this.linksService.badLinks = [];
-        this.elapsedTime = null;
+        this.elapsedTime = 0;
+        const intervalId = setInterval(() => {
+            this.elapsedTime++;
+        }, 10);
 
-        this.elapsedTime = await deadLinkChecker(this.domainName, undefined, this.linksService.links);
+        await deadLinkChecker(this.domainName, undefined, this.linksService.links);
 
+        clearInterval(intervalId);
     }
 }
