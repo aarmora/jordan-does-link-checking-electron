@@ -37,6 +37,15 @@ export class AppComponent {
             this.elapsedTime++;
         }, 10);
 
+        // const worker = new Worker('./dead-link-checker.worker', { type: 'module' });
+        // worker.onmessage = ({ data }) => {
+        //     console.log(`page got message: ${data}`);
+        // };
+        // worker.postMessage({
+        //     domainName: this.domainName,
+        //     links: this.linksService.links
+        // });
+
         await deadLinkChecker(this.domainName, undefined, this.linksService.links);
 
         clearInterval(intervalId);
